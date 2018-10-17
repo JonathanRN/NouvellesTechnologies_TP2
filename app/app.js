@@ -1,13 +1,18 @@
 const express = require('express')
 const app = express()
 
-var usersRouter = require('./routes/users')
+var bodyParser = require('body-parser')
+
+app.use( bodyParser.json() );     
+app.use(express.json());       
+
+var usersRouter = require('../routes/users');
+var indexRouter = require('../routes/index');
 
 app.use('/users',usersRouter);
+app.use('/users/',usersRouter);
+app.use('/',indexRouter);
 
-//app.get('/', function (req, res) {
-//  res.send('Hello World!')
-//})
 
 app.listen(3000, function () {
   console.log('Server up and running')
