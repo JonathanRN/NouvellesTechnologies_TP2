@@ -1,9 +1,9 @@
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/mydb";
+var url = "mongodb://localhost:27017/tp2db";
 
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("mydb");
+    var dbo = db.db("tp2db");
     var myobj = { name: "Company Inc", address: "Highway 37" };
     dbo.collection("customers").insertOne(myobj, function(err, res) {
       if (err) throw err;
