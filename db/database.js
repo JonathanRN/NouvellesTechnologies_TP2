@@ -30,9 +30,16 @@ class database {
 
         dbo.collection("users").insertOne(user, function(err, res) {
         if (err) throw err;
-        routerRes.send(`User: ${userToAdd.name} added!`)
-        //tp2db.close();
+        routerRes.send(`User: ${userToAdd.name} added!`);
         });
+    }
+
+    getUsers(routerRes){
+        dbo.collection("users").find({}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            routerRes.json(result);
+          });
     }
 }
 
