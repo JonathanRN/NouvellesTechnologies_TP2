@@ -1,5 +1,6 @@
 import MongoClient from 'mongodb';
 import config from '../config/index';
+import { debug } from 'util';
 
 let tp2db;
 let dbo = null;
@@ -25,8 +26,15 @@ class database {
         dbo.collection("users").insertOne(user, function(err, res) {
         if (err) throw err;
         routerRes.send(`User: ${name} added!`)
-        tp2db.close();
         });
+    }
+
+    getUsers(routerRes){
+        dbo.collection("users").find({}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            routerRes.json(result);
+          });
     }
 }
 
