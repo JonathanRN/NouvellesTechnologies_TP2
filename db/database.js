@@ -1,5 +1,4 @@
 import MongoClient from 'mongodb';
-import config from '../config/index';
 
 let tp2db;
 let dbo = null;
@@ -8,9 +7,9 @@ class database {
 
     connectToDb()  {
         try {
-            MongoClient.connect(config.mongoUrl, { useNewUrlParser: true }, function(err, db) {
+            MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true }, function(err, db) {
                 tp2db = db;
-                dbo = tp2db.db(config.dbName)
+                dbo = tp2db.db(process.env.DATABASE_NAME)
                 if (err) throw err;
                 console.log("Connected to DB!")
             });
@@ -20,12 +19,19 @@ class database {
         }
     }
 
-    createUser(name, routerRes) {
-        let user = { name: name };
+    createUser(userToAdd, routerRes) {
+        let user = { 
+            name: userToAdd.name,
+	        email: userToAdd.email,
+	        pwd: userToAdd.pwd,
+	        team: userToAdd.team,
+	        score: userToAdd.score
+         };
+
         dbo.collection("users").insertOne(user, function(err, res) {
         if (err) throw err;
-        routerRes.send(`User: ${name} added!`)
-        tp2db.close();
+        routerRes.send(`User: ${userToAdd.name} added!`)
+        //tp2db.close();
         });
     }
 }

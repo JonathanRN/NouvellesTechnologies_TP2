@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser'
+import 'dotenv/config';
 import database from '../db/database'
 import usersRouter from '../routes/users'
 //import indexRouter from '../routes/index'

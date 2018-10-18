@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next){
     var db = new database();
-    db.createUser(req.body.name, res);
+    db.createUser(req.body, res);
 });
 
 module.exports = router;
