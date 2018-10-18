@@ -1,9 +1,9 @@
 import assert from 'assert';
-import database from '../db/database'
+import Database from '../db/database'
 
 describe('Tests', function() {
     before('connect', function(){
-        new database().connectToDb(); 
+        new Database().connectToDb(); 
     })
 
 describe('Array', function() {

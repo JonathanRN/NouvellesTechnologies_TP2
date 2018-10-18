@@ -18,22 +18,18 @@
   },
   "homepage": "https://github.com/JonathanRN/TP2NouvelleTech#readme",
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
     "body-parser": "^1.18.3",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "mongodb": "^3.1.8",
-    "mongoose": "^5.3.4",
-    "morgan": "^1.9.1"
+    "mongoose": "^5.3.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@babel/preset-stage-3": "^7.0.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "morgan": "^1.9.1"
   }
 }

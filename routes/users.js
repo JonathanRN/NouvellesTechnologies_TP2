@@ -1,8 +1,8 @@
-import database from '../db/database'
+import Database from '../db/database'
 import express from 'express'
 let router = express.Router();
 let app = express();
-let db = new database();
+let db = new Database();
 
 app.use(express.json());
 

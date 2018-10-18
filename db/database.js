@@ -1,19 +1,28 @@
 import MongoClient from 'mongodb';
+import mongoose from 'mongoose';
+import User from './user';
 
 let tp2db;
 let dbo = null;
 
-class database {
+
+class Database {
 
     connectToDb()  {
         try {
-            MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true }, function(err, db) {
+            mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
+            var db = mongoose.connection;
+            db.on('error', console.error.bind(console, 'connection error:'));
+            db.once('open', function() {
+                console.log("Connected to DB!")
+            });
+            /*MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true }, function(err, db) {
                 tp2db = db;
                 dbo = tp2db.db(process.env.DATABASE_NAME)
                 if (err) throw err;
                 console.log("Connected to DB!")
                 return true;
-            });
+            });*/
         }
         catch (err) {
         console.log(err);
@@ -22,39 +31,33 @@ class database {
     }
 
     createUser(userToAdd, routerRes) {
-        let user = { 
-            name: userToAdd.name,
-	        email: userToAdd.email,
-	        pwd: userToAdd.pwd,
-	        team: userToAdd.team,
-	        score: userToAdd.score
-        };
+        let newUser = new User(userToAdd);
 
         /* https://teamtreehouse.com/community/
         how-would-i-check-to-see-if-an-email-entered-in-a-registration-form-was-already-in-the-a-mongo-database*/
-        dbo.collection("users").findOne({ email: user.email }, function(err, result) {
+        User.findOne({ email: newUser.email }, function(err, result) {
             // result is true if the email exists.
             if (result) {
-                    routerRes.send(`The email ${user.email} already exists.`);
+                    routerRes.send(`The email ${newUser.email} already exists.`);
             } else {
-                dbo.collection("users").insertOne(user, function(err, res) {
-                    if (err) throw err;
-                    routerRes.send(`User: ${userToAdd.name} added!`);
+                newUser.save(function (err, newUser) {
+                    if (err) return console.error(err);
+                    routerRes.send(`User: ${newUser.name} added!`);
                 });
             }
         });
     }
 
     getUsers(routerRes){
-        dbo.collection("users").find({}).toArray(function(err, result) {
-            if (err) throw err;
-            routerRes.json(result);
-        });
+        User.find(function(err, users){
+            if(err) throw err;
+            routerRes.json(users);
+        })
     }
 
     deleteUser(routerRes,name){
         let query = {name: name};
-        dbo.collection("users").deleteOne(query, function(err, obj) {
+        User.deleteOne(query, function(err, obj) {
             if (err) throw err;
             routerRes.send(obj);
           });
@@ -62,23 +65,19 @@ class database {
 
     userLogin(routerRes, body){
         let query = {email: body.email};
-        dbo.collection("users").findOne(query, function(err, obj) {
+        User.findOne(query, function(err, obj) {
             if (err) throw err;
-            if(obj)
-            {    
-                if(obj.pwd == body.pwd){
+            if(obj) {    
+                if(obj.pwd == body.pwd) {
                     routerRes.send("Valid Login");
-                }
-                else{
+                } else {
                     routerRes.send("Invalid Password");
                 }
-            }
-            else{
+            } else {
                 routerRes.send("Invalid Email")
             }
           });
-    }
-    
+        }
 }
 
-export default database;
+export default Database;
