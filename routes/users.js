@@ -18,4 +18,12 @@ router.post('/users/create', function(req, res, next){
     db.createUser(req.body, res);
 });
 
+router.post('/users/delete', function(req, res, next) {
+    db.deleteUser(res,req.body.name);
+});
+
+router.post('/users/login', function(req, res, next) {
+    db.userLogin(res,req.body);
+});
+
 module.exports = router;
