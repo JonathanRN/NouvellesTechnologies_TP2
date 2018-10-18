@@ -1,9 +1,17 @@
-var express = require('express');
-var router = express.Router();
+import database from '../db/database'
+import express from 'express'
+let router = express.Router();
+let app = express();
 
-/* GET users listing. */
+app.use(express.json());
+
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
+});
+
+router.post('/', function(req, res, next){
+    var db = new database();
+    db.createUser(req.body.name, res);
 });
 
 module.exports = router;
