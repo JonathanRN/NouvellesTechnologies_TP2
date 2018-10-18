@@ -1,10 +1,5 @@
-import MongoClient from 'mongodb';
 import mongoose from 'mongoose';
 import User from './user';
-
-let tp2db;
-let dbo = null;
-
 
 class Database {
 
@@ -16,17 +11,9 @@ class Database {
             db.once('open', function() {
                 console.log("Connected to DB!")
             });
-            /*MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true }, function(err, db) {
-                tp2db = db;
-                dbo = tp2db.db(process.env.DATABASE_NAME)
-                if (err) throw err;
-                console.log("Connected to DB!")
-                return true;
-            });*/
         }
-        catch (err) {
-        console.log(err);
-        return false;
+            catch (err) {
+            console.log(err);
         }
     }
 
