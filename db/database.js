@@ -26,20 +26,28 @@ class database {
 	        pwd: userToAdd.pwd,
 	        team: userToAdd.team,
 	        score: userToAdd.score
-         };
+        };
 
-        dbo.collection("users").insertOne(user, function(err, res) {
-        if (err) throw err;
-        routerRes.send(`User: ${userToAdd.name} added!`);
+        /* https://teamtreehouse.com/community/
+        how-would-i-check-to-see-if-an-email-entered-in-a-registration-form-was-already-in-the-a-mongo-database*/
+        dbo.collection("users").findOne({ email: user.email }, function(err, result) {
+            // result is true if the email exists.
+            if (result) {
+                    routerRes.send(`The email ${user.email} already exists.`);
+            } else {
+                dbo.collection("users").insertOne(user, function(err, res) {
+                    if (err) throw err;
+                    routerRes.send(`User: ${userToAdd.name} added!`);
+                });
+            }
         });
     }
 
     getUsers(routerRes){
         dbo.collection("users").find({}).toArray(function(err, result) {
             if (err) throw err;
-            console.log(result);
             routerRes.json(result);
-          });
+        });
     }
 }
 
