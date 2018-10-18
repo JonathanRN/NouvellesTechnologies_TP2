@@ -8,8 +8,7 @@ let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-new Database().connectToDb(router);
-
+new Database().connectToTestDb();
 
 app.use('/', router);
 

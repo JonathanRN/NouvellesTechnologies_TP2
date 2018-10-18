@@ -17,6 +17,20 @@ class Database {
         }
     }
 
+    connectToTestDb()  {
+        try {
+            mongoose.connect("mongodb://localhost:27017/tp2db_tests", { useNewUrlParser: true });
+            var db = mongoose.connection;
+            db.on('error', console.error.bind(console, 'connection error:'));
+            db.once('open', function() {
+                console.log("Connected to test DB!")
+            });
+        }
+            catch (err) {
+            console.log(err);
+        }
+    }
+
     createUser(userToAdd, routerRes) {
         let newUser = new User(userToAdd);
 

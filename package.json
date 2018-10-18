@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register",
+    "test": "mocha --compilers js:@babel/register",
     "start": "nodemon --exec babel-node src/app.js"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "mocha": "^5.2.0",
     "morgan": "^1.9.1"
