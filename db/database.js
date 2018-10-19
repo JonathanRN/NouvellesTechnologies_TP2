@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import User from './user';
 import Score from './score';
-import JsonValidator from './jsonValidator'
+import JsonValidator from './jsonValidator';
+import EmailValidator from '../src/EmailValidator';
 
 class Database {
 
@@ -36,24 +37,29 @@ class Database {
     createUser(userToAdd, callback) {
         let newUser = new User(userToAdd);
         let jsonValidator = new JsonValidator();
+        let emailValidator = new EmailValidator();
 
         if (!jsonValidator.isUserValid(userToAdd)) callback(false);
 
-        User.findOne({ email: newUser.email }, function(err, result) {
-            // result is true if the email exists.
-            if (result) {
-                    //routerRes.send(`The email ${newUser.email} already exists.`);
-                    console.log(`The email ${newUser.email} already exists.`)
-                    callback(false);
-            } else {
-                newUser.save(function (err, newUser) {
-                    if (err) return console.error(err);
-                    //routerRes.send(`User: ${newUser.name} added!`);
-                    console.log(`User: ${newUser.name} added!`)
-                    callback(true);
-                });
-            }
-        });
+        if (emailValidator.isEmailValid(userToAdd.email)) {
+            User.findOne({ email: newUser.email }, function(err, result) {
+                // result is true if the email exists.
+                if (result) {
+                        //routerRes.send(`The email ${newUser.email} already exists.`);
+                        console.log(`The email ${newUser.email} already exists.`)
+                        callback(false);
+                } else {
+                    newUser.save(function (err, newUser) {
+                        if (err) return console.error(err);
+                        //routerRes.send(`User: ${newUser.name} added!`);
+                        console.log(`User: ${newUser.name} added!`)
+                        callback(true);
+                    });
+                }
+            });
+        } else {
+            console.log(`Invalid email ${userToAdd.email}, please verify again.`);
+        }
     }
 
     getUsers(routerRes){
