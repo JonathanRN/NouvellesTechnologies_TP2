@@ -44,7 +44,7 @@ class Database {
             return;
         }
 
-        if (emailValidator.isEmailValid(userToAdd.email)) {
+        if (emailValidator.isEmailValid(newUser.email)) {
             User.findOne({ email: newUser.email }, function(err, result) {
                 // result is true if the email exists.
                 if (result) {

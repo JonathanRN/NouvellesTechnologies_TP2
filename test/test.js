@@ -26,13 +26,18 @@ let negativeScorePostRequestScore = {email:'raoul@gmail.com',score:-1000,pwd:'mi
 let db = new Database();
 
 describe('Tests', function(){
-    before((done)=>{
+    before((done)=> {
         db.connectToTestDb();
         done();
     });
 
-    this.beforeEach((done)=>{
-        mongoose.connection.collections.users.drop(()=>{
+    after((done) => {
+        mongoose.connection.close();
+        done();
+    })
+
+    this.beforeEach((done)=> {
+        mongoose.connection.collections.users.drop(()=> {
             done();
         });
     });
