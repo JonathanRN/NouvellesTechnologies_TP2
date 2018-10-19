@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import User from './user';
+import Score from './score';
 
 class Database {
 
@@ -34,8 +35,6 @@ class Database {
     createUser(userToAdd,callback) {
         let newUser = new User(userToAdd);
 
-        /* https://teamtreehouse.com/community/
-        how-would-i-check-to-see-if-an-email-entered-in-a-registration-form-was-already-in-the-a-mongo-database*/
         User.findOne({ email: newUser.email }, function(err, result) {
             // result is true if the email exists.
             if (result) {
@@ -60,7 +59,7 @@ class Database {
         })
     }
 
-    deleteUser(routerRes,name){
+    deleteUser(name, routerRes){
         let query = {name: name};
         User.deleteOne(query, function(err, obj) {
             if (err) throw err;
@@ -68,21 +67,46 @@ class Database {
           });
     }
 
-    userLogin(routerRes, body){
+    userLogin(body, routerRes, callback){
         let query = {email: body.email};
         User.findOne(query, function(err, obj) {
             if (err) throw err;
             if(obj) {    
                 if(obj.pwd == body.pwd) {
-                    routerRes.send("Valid Login");
+                    callback(true);
                 } else {
                     routerRes.send("Invalid Password");
+                    callback(false);
                 }
             } else {
-                routerRes.send("Invalid Email")
+                routerRes.send("Invalid Email");
+                callback(false);
             }
           });
-        }
+    }
+
+    addScoreToLeaderboard(scoreToAdd, routerRes) {
+        this.userLogin(scoreToAdd, routerRes, (userExists) => {
+            if (userExists) {
+                User.findOne({email: scoreToAdd.email}, function(err, result) {
+                    if (err) throw err; 
+                    let newScore = new Score({name: result.name, score: scoreToAdd.score});
+        
+                    newScore.save(function (err, newScore) {
+                        if (err) return console.error(err);
+                        routerRes.send(`Score ${newScore.score} of email ${scoreToAdd.email} added to leaderboard.`);
+                    });
+                });
+            }
+        });
+    }
+
+    getLeaderboard(routerRes) {
+        Score.find(function(err, users){
+            if(err) throw err;
+            routerRes.json(users);
+        })
+    }
 }
 
 export default Database;

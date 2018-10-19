@@ -5,8 +5,7 @@ let UserSchema = new Schema({
     name: String,
 	email: String,
     pwd: String,
-	team: String,
-	score: Number
+	team: String
 })
 
 let User = mongoose.model('user', UserSchema);
