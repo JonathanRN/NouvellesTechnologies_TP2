@@ -59,6 +59,7 @@ class Database {
             });
         } else {
             console.log(`Invalid email ${userToAdd.email}, please verify again.`);
+            callback(false);
         }
     }
 
