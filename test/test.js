@@ -37,142 +37,146 @@ describe('Tests', function(){
         });
     });
 
-    describe('Create valid user', function() {
-        it('should save a user', (done)=> {
-            db.createUser(validUser, (userCreated)=>{
-                assert(userCreated);
-                done();
+    //User Creation tests
+    describe('////UserCreationTests////', function(){
+        describe('Create valid user', function() {
+            it('should save a user', (done)=> {
+                db.createUser(validUser, (userCreated)=>{
+                    assert(userCreated);
+                    done();
+                });
+            });
+        });
+
+        describe('Create user with no name', function() {
+            it('should not save a user', (done)=> {
+                db.createUser(noNameUser, (userCreated)=>{
+                    assert(!userCreated);
+                    done();
+                });
+            });
+        });
+
+        describe('Create user with no password', function() {
+            it('should not save a user', (done)=> {
+                db.createUser(noPasswordUser, (userCreated)=>{
+                    assert(!userCreated);
+                    done();
+                });
+            });
+        });
+
+        describe('Create user with no email', function() {
+            it('should not save a user', (done)=> {
+                db.createUser(noEmailUser, (userCreated)=>{
+                    assert(!userCreated);
+                    done();
+                });
+            });
+        });
+
+        describe('Create user with no @ email', function() {
+            it('should not save a user', (done)=> {
+                db.createUser(noAtEmailUser, (userCreated)=>{
+                    assert(!userCreated);
+                    done();
+                });
+            });
+        });
+
+        describe('Create user with no dot email', function() {
+            it('should not save a user', (done)=> {
+                db.createUser(noDotEmailUser, (userCreated)=>{
+                    assert(!userCreated);
+                    done();
+                });
+            });
+        });
+
+        describe('Create user with no adress email', function() {
+            it('should not save a user', (done)=> {
+                db.createUser(noAdressEmailUser, (userCreated)=>{
+                    assert(!userCreated);
+                    done();
+                });
+            });
+        });
+
+        describe('Create user with no domain email', function() {
+            it('should not save a user', (done)=> {
+                db.createUser(noDomainEmailUser, (userCreated)=>{
+                    assert(!userCreated);
+                    done();
+                });
             });
         });
     });
 
-    describe('Create user with no name', function() {
-        it('should not save a user', (done)=> {
-            db.createUser(noNameUser, (userCreated)=>{
-                assert(!userCreated);
-                done();
+    //Score creation tests
+    describe('////ScoreCreationTests////', function(){
+        describe('Create valid score in leaderboard', function() {
+            it('should save a score in leaderboard', (done)=> {
+                db.createUser(validUser, (userCreated)=> {
+                    if(userCreated) {
+                        db.addScoreToLeaderboard(validPostRequestScore, (scoreCreated)=> {
+                            assert(scoreCreated);
+                            done();
+                        });
+                    }
+                });
+            });
+        });
+
+        describe('Create score with no email in leaderboard', function() {
+            it('should not save a score in leaderboard', (done)=> {
+                db.createUser(validUser, (userCreated)=> {
+                    if(userCreated) {
+                        db.addScoreToLeaderboard(noEmailPostRequestScore, (scoreCreated)=> {
+                            assert(!scoreCreated);
+                            done();
+                        });
+                    }
+                });
+            });
+        });
+
+        describe('Create score with no score in leaderboard', function() {
+            it('should not save a score in leaderboard', (done)=> {
+                db.createUser(validUser, (userCreated)=> {
+                    if(userCreated) {
+                        db.addScoreToLeaderboard(noScorePostRequestScore, (scoreCreated)=> {
+                            assert(!scoreCreated);
+                            done();
+                        });
+                    }
+                });
+            });
+        });
+
+        describe('Create score with no password in leaderboard', function() {
+            it('should not save a score in leaderboard', (done)=> {
+                db.createUser(validUser, (userCreated)=> {
+                    if(userCreated) {
+                        db.addScoreToLeaderboard(noPasswordPostRequestScore, (scoreCreated)=> {
+                            assert(!scoreCreated);
+                            done();
+                        });
+                    }
+                });
+            });
+        });
+
+        describe('Create negative score in leaderboard', function() {
+            it('should not save a score in leaderboard', (done)=> {
+                db.createUser(validUser, (userCreated)=> {
+                    if(userCreated) {
+                        db.addScoreToLeaderboard(negativeScorePostRequestScore, (scoreCreated)=> {
+                            assert(!scoreCreated);
+                            done();
+                        });
+                    }
+                });
             });
         });
     });
-
-    describe('Create user with no password', function() {
-        it('should not save a user', (done)=> {
-            db.createUser(noPasswordUser, (userCreated)=>{
-                assert(!userCreated);
-                done();
-            });
-        });
-    });
-
-    describe('Create user with no email', function() {
-        it('should not save a user', (done)=> {
-            db.createUser(noEmailUser, (userCreated)=>{
-                assert(!userCreated);
-                done();
-            });
-        });
-    });
-
-    describe('Create user with no @ email', function() {
-        it('should not save a user', (done)=> {
-            db.createUser(noAtEmailUser, (userCreated)=>{
-                assert(!userCreated);
-                done();
-            });
-        });
-    });
-
-    describe('Create user with no dot email', function() {
-        it('should not save a user', (done)=> {
-            db.createUser(noDotEmailUser, (userCreated)=>{
-                assert(!userCreated);
-                done();
-            });
-        });
-    });
-
-    describe('Create user with no adress email', function() {
-        it('should not save a user', (done)=> {
-            db.createUser(noAdressEmailUser, (userCreated)=>{
-                assert(!userCreated);
-                done();
-            });
-        });
-    });
-
-    describe('Create user with no domain email', function() {
-        it('should not save a user', (done)=> {
-            db.createUser(noDomainEmailUser, (userCreated)=>{
-                assert(!userCreated);
-                done();
-            });
-        });
-    });
-
-    describe('Create valid score in leaderboard', function() {
-        it('should save a score in leaderboard', (done)=> {
-            db.createUser(validUser, (userCreated)=> {
-                if(userCreated) {
-                    db.addScoreToLeaderboard(validPostRequestScore, (scoreCreated)=> {
-                        assert(scoreCreated);
-                        done();
-                    });
-                }
-            });
-        });
-    });
-
-    describe('Create score with no email in leaderboard', function() {
-        it('should not save a score in leaderboard', (done)=> {
-            db.createUser(validUser, (userCreated)=> {
-                if(userCreated) {
-                    db.addScoreToLeaderboard(noEmailPostRequestScore, (scoreCreated)=> {
-                        assert(!scoreCreated);
-                        done();
-                    });
-                }
-            });
-        });
-    });
-
-    describe('Create score with no score in leaderboard', function() {
-        it('should not save a score in leaderboard', (done)=> {
-            db.createUser(validUser, (userCreated)=> {
-                if(userCreated) {
-                    db.addScoreToLeaderboard(noScorePostRequestScore, (scoreCreated)=> {
-                        assert(!scoreCreated);
-                        done();
-                    });
-                }
-            });
-        });
-    });
-
-    describe('Create score with no password in leaderboard', function() {
-        it('should not save a score in leaderboard', (done)=> {
-            db.createUser(validUser, (userCreated)=> {
-                if(userCreated) {
-                    db.addScoreToLeaderboard(noPasswordPostRequestScore, (scoreCreated)=> {
-                        assert(!scoreCreated);
-                        done();
-                    });
-                }
-            });
-        });
-    });
-
-    describe('Create negative score in leaderboard', function() {
-        it('should not save a score in leaderboard', (done)=> {
-            db.createUser(validUser, (userCreated)=> {
-                if(userCreated) {
-                    db.addScoreToLeaderboard(negativeScorePostRequestScore, (scoreCreated)=> {
-                        assert(!scoreCreated);
-                        done();
-                    });
-                }
-            });
-        });
-    });
-
-
 });

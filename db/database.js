@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import User from './user';
 import Score from './score';
-import UserCreationValidation from './userCreationValidation'
+import JsonValidator from './jsonValidator'
 
 class Database {
 
@@ -35,27 +35,28 @@ class Database {
 
     createUser(userToAdd, callback) {
         let newUser = new User(userToAdd);
-        let userCreationValidation = new UserCreationValidation();
+        let jsonValidator = new JsonValidator();
 
-        if (userCreationValidation.isUserValid(userToAdd)) {
-            User.findOne({ email: newUser.email }, function(err, result) {
-                // result is true if the email exists.
-                if (result) {
-                        //routerRes.send(`The email ${newUser.email} already exists.`);
-                        console.log(`The email ${newUser.email} already exists.`)
-                        callback(false);
-                } else {
-                    newUser.save(function (err, newUser) {
-                        if (err) return console.error(err);
-                        //routerRes.send(`User: ${newUser.name} added!`);
-                        console.log(`User: ${newUser.name} added!`)
-                        callback(true);
-                    });
-                }
-            });
-        }else {
+        if (!jsonValidator.isUserValid(userToAdd)) {
             callback(false);
+            return;
         }
+
+        User.findOne({ email: newUser.email }, function(err, result) {
+            // result is true if the email exists.
+            if (result) {
+                    //routerRes.send(`The email ${newUser.email} already exists.`);
+                    console.log(`The email ${newUser.email} already exists.`)
+                    callback(false);
+            } else {
+                newUser.save(function (err, newUser) {
+                    if (err) return console.error(err);
+                    //routerRes.send(`User: ${newUser.name} added!`);
+                    console.log(`User: ${newUser.name} added!`)
+                    callback(true);
+                });
+            }
+        });
     }
 
     getUsers(routerRes){
@@ -94,8 +95,15 @@ class Database {
     }
 
     addScoreToLeaderboard(scoreToAdd, callback) {
+        let jsonValidator = new JsonValidator();
+
+        if (!jsonValidator.isScoreValid(scoreToAdd)){
+            callback(false);
+            return;
+        }
+
         this.userLogin(scoreToAdd, (userExists) => {
-            if (userExists) {
+            if (userExists && scoreToAdd.score >= 0) {
                 User.findOne({email: scoreToAdd.email}, function(err, result) {
                     if (err) throw err; 
                     let newScore = new Score({name: result.name, score: scoreToAdd.score});
