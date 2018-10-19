@@ -53,6 +53,8 @@ class Database {
                     });
                 }
             });
+        }else {
+            callback(false);
         }
     }
 
