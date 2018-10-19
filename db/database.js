@@ -39,7 +39,10 @@ class Database {
         let jsonValidator = new JsonValidator();
         let emailValidator = new EmailValidator();
 
-        if (!jsonValidator.isUserValid(userToAdd)) callback(false);
+        if (!jsonValidator.isUserValid(userToAdd)) {
+            callback(false);
+            return;
+        }
 
         if (emailValidator.isEmailValid(userToAdd.email)) {
             User.findOne({ email: newUser.email }, function(err, result) {
@@ -101,7 +104,10 @@ class Database {
     addScoreToLeaderboard(scoreToAdd, callback) {
         let jsonValidator = new JsonValidator();
 
-        if (!jsonValidator.isScoreValid(scoreToAdd)) callback(false);
+        if (!jsonValidator.isScoreValid(scoreToAdd)){
+            callback(false);
+            return;
+        }
 
         this.userLogin(scoreToAdd, (userExists) => {
             if (userExists && scoreToAdd.score >= 0) {
