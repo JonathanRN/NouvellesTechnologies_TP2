@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
     res.send('Home Page');
 });
 
+//Users
 router.get('/users', function(req, res, next) {
     db.getUsers(res);
 });
@@ -19,11 +20,22 @@ router.post('/users/create', function(req, res, next){
 });
 
 router.post('/users/delete', function(req, res, next) {
-    db.deleteUser(res,req.body.name);
+    db.deleteUser(req.body.name, res);
 });
 
 router.post('/users/login', function(req, res, next) {
-    db.userLogin(res,req.body);
+    db.canLogin(req.body, res);
 });
+////
+
+//Leaderboard
+router.get('/leaderboard', function(req, res, next) {
+    db.getLeaderboard(res);
+});
+
+router.post('/leaderboard/add-score', function(req, res, next){
+    db.addScoreToLeaderboard(req.body, res);
+});
+////
 
 module.exports = router;
