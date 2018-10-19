@@ -71,7 +71,7 @@ class Database {
           });
     }
 
-    userLogin(body, routerRes, callback){
+    userLogin(body, callback){
         let query = {email: body.email};
         User.findOne(query, function(err, obj) {
             if (err) throw err;
@@ -79,18 +79,20 @@ class Database {
                 if(obj.pwd == body.pwd) {
                     callback(true);
                 } else {
-                    routerRes.send("Invalid Password");
+                    //routerRes.send("Invalid Password");
+                    console.log("Invalid Password");
                     callback(false);
                 }
             } else {
-                routerRes.send("Invalid Email");
+                //routerRes.send("Invalid Email");
+                console.log("Invalid Email");
                 callback(false);
             }
           });
     }
 
-    addScoreToLeaderboard(scoreToAdd, routerRes) {
-        this.userLogin(scoreToAdd, routerRes, (userExists) => {
+    addScoreToLeaderboard(scoreToAdd, callback) {
+        this.userLogin(scoreToAdd, (userExists) => {
             if (userExists) {
                 User.findOne({email: scoreToAdd.email}, function(err, result) {
                     if (err) throw err; 
@@ -98,9 +100,13 @@ class Database {
         
                     newScore.save(function (err, newScore) {
                         if (err) return console.error(err);
-                        routerRes.send(`Score ${newScore.score} of email ${scoreToAdd.email} added to leaderboard.`);
+                        //routerRes.send(`Score ${newScore.score} of email ${scoreToAdd.email} added to leaderboard.`);
+                        console.log(`Score ${newScore.score} of email ${scoreToAdd.email} added to leaderboard.`);
+                        callback(true);
                     });
                 });
+            } else {
+                callback(false);
             }
         });
     }
