@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import User from './user';
 import Score from './score';
+import UserCreationValidation from './userCreationValidation'
 
 class Database {
 
@@ -32,24 +33,27 @@ class Database {
         }
     }
 
-    createUser(userToAdd,callback) {
+    createUser(userToAdd, callback) {
         let newUser = new User(userToAdd);
+        let userCreationValidation = new UserCreationValidation();
 
-        User.findOne({ email: newUser.email }, function(err, result) {
-            // result is true if the email exists.
-            if (result) {
-                    //routerRes.send(`The email ${newUser.email} already exists.`);
-                    console.log(`The email ${newUser.email} already exists.`)
-                    callback(false);
-            } else {
-                newUser.save(function (err, newUser) {
-                    if (err) return console.error(err);
-                    //routerRes.send(`User: ${newUser.name} added!`);
-                    console.log(`User: ${newUser.name} added!`)
-                    callback(true);
-                });
-            }
-        });
+        if (userCreationValidation.isUserValid(userToAdd)) {
+            User.findOne({ email: newUser.email }, function(err, result) {
+                // result is true if the email exists.
+                if (result) {
+                        //routerRes.send(`The email ${newUser.email} already exists.`);
+                        console.log(`The email ${newUser.email} already exists.`)
+                        callback(false);
+                } else {
+                    newUser.save(function (err, newUser) {
+                        if (err) return console.error(err);
+                        //routerRes.send(`User: ${newUser.name} added!`);
+                        console.log(`User: ${newUser.name} added!`)
+                        callback(true);
+                    });
+                }
+            });
+        }
     }
 
     getUsers(routerRes){

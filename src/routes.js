@@ -16,7 +16,7 @@ router.get('/users', function(req, res, next) {
 });
 
 router.post('/users/create', function(req, res, next){
-    db.createUser(req.body,function(){});
+    db.createUser(req.body, function(){});
 });
 
 router.post('/users/delete', function(req, res, next) {
@@ -24,7 +24,7 @@ router.post('/users/delete', function(req, res, next) {
 });
 
 router.post('/users/login', function(req, res, next) {
-    db.canLogin(req.body, res);
+    db.userLogin(req.body, res);
 });
 ////
 
