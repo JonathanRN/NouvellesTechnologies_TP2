@@ -7,21 +7,21 @@ import Score from '../db/score'
 
 mongoose.Promise = global.Promise;
 
-let validUser = {name:'Lul',email:'oui@oui.oui',pwd:'miel',team:'plebs'};
-let noNameUser = {email:'oui@oui.oui',pwd:'miel',team:'plebs'};
+let validUser = {name:'Lul',email:'raoul@gmail.com',pwd:'miel',team:'plebs'};
+let noNameUser = {email:'raoul@gmail.com',pwd:'miel',team:'plebs'};
 let noEmailUser = {name:'Lul',pwd:'miel',team:'plebs'};
-let noPasswordUser = {name:'Lul',email:'oui@oui.oui',team:'plebs'};
+let noPasswordUser = {name:'Lul',email:'raoul@gmail.com',team:'plebs'};
 
-let noAtEmailUser = {name:'Lul',email:'ouioui.oui',pwd:'miel',team:'plebs'};
-let noDotEmailUser = {name:'Lul',email:'oui@oui.oui',pwd:'miel',team:'plebs'};
-let noAdressEmailUser = {name:'Lul',email:'@oui.oui',pwd:'miel',team:'plebs'};
-let noDomainEmailUser = {name:'Lul',email:'oui@.oui',pwd:'miel',team:'plebs'};
+let noAtEmailUser = {name:'Lul',email:'raoulgmail.com',pwd:'miel',team:'plebs'};
+let noDotEmailUser = {name:'Lul',email:'raoul@gmailcom',pwd:'miel',team:'plebs'};
+let noAdressEmailUser = {name:'Lul',email:'@gmail.com',pwd:'miel',team:'plebs'};
+let noDomainEmailUser = {name:'Lul',email:'raoul@.com',pwd:'miel',team:'plebs'};
 
-let validPostRequestScore = {email:'oui@oui.oui',score:1000,pwd:'miel'};
+let validPostRequestScore = {email:'raoul@gmail.com',score:1000,pwd:'miel'};
 let noEmailPostRequestScore = {score:1000,pwd:'miel'};
-let noScorePostRequestScore = {email:'oui@oui.oui',pwd:'miel'};
-let noPasswordPostRequestScore = {email:'oui@oui.oui',score:1000};
-let negativeScorePostRequestScore = {email:'oui@oui.oui',score:-1000,pwd:'miel'};
+let noScorePostRequestScore = {email:'raoul@gmail.com',pwd:'miel'};
+let noPasswordPostRequestScore = {email:'raoul@gmail.com',score:1000};
+let negativeScorePostRequestScore = {email:'raoul@gmail.com',score:-1000,pwd:'miel'};
 
 let db = new Database();
 
