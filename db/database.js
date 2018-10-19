@@ -31,7 +31,7 @@ class Database {
         }
     }
 
-    createUser(userToAdd, routerRes) {
+    createUser(userToAdd,callback) {
         let newUser = new User(userToAdd);
 
         /* https://teamtreehouse.com/community/
@@ -39,11 +39,15 @@ class Database {
         User.findOne({ email: newUser.email }, function(err, result) {
             // result is true if the email exists.
             if (result) {
-                    routerRes.send(`The email ${newUser.email} already exists.`);
+                    //routerRes.send(`The email ${newUser.email} already exists.`);
+                    console.log(`The email ${newUser.email} already exists.`)
+                    callback(false);
             } else {
                 newUser.save(function (err, newUser) {
                     if (err) return console.error(err);
-                    routerRes.send(`User: ${newUser.name} added!`);
+                    //routerRes.send(`User: ${newUser.name} added!`);
+                    console.log(`User: ${newUser.name} added!`)
+                    callback(true);
                 });
             }
         });
