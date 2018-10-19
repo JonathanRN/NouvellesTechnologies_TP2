@@ -34,7 +34,7 @@ router.get('/leaderboard', function(req, res, next) {
 });
 
 router.post('/leaderboard/add-score', function(req, res, next){
-    db.addScoreToLeaderboard(req.body, res);
+    db.addScoreToLeaderboard(req.body,function(){});
 });
 ////
 
