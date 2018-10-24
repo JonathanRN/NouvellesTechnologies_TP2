@@ -4,6 +4,7 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import User from '../db/user';
 import Score from '../db/score'
+import JsonValidator from '../db/jsonValidator';
 
 mongoose.Promise = global.Promise;
 
@@ -24,6 +25,7 @@ let noPasswordPostRequestScore = {email:'raoul@gmail.com',score:1000};
 let negativeScorePostRequestScore = {email:'raoul@gmail.com',score:-1000,pwd:'miel'};
 
 let db = new Database();
+let jsonValidator = new JsonValidator();
 
 describe('Tests', function(){
     before((done)=> {
@@ -42,6 +44,23 @@ describe('Tests', function(){
         });
     });
 
+
+    //Get User tests
+    describe('////GetUserTests////', function(){
+        describe('Get User', function() {
+            it('should get a user', (done)=> {
+                db.createUser(validUser, (userCreated)=>{
+                    if(userCreated)
+                    {
+                            db.getUsers((user)=>{
+                            assert(jsonValidator.compareUsers(user[0],validUser));
+                            done();
+                        });
+                    }
+                });
+            });
+        });
+    });
     //User Creation tests
     describe('////UserCreationTests////', function(){
         describe('Create valid user', function() {
