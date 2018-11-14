@@ -3,7 +3,7 @@ import Database from '../db/database';
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import User from '../db/user';
-import Score from '../db/score'
+import Score from '../db/score';
 
 mongoose.Promise = global.Promise;
 

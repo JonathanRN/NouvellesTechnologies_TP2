@@ -16,7 +16,7 @@ router.get('/users', function(req, res, next) {
 });
 
 router.post('/users/create', function(req, res, next){
-    db.createUser(req.body, function(){});
+    db.createUser(req.body, res, function(){});
 });
 
 router.post('/users/delete', function(req, res, next) {

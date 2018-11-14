@@ -12,7 +12,7 @@ class Database {
             var db = mongoose.connection;
             db.on('error', console.error.bind(console, 'connection error:'));
             db.once('open', function() {
-                console.log("Connected to DB!")
+                console.log("Connected to DB!");
             });
         }
             catch (err) {
@@ -34,7 +34,7 @@ class Database {
         }
     }
 
-    createUser(userToAdd, callback) {
+    createUser(userToAdd, routerRes, callback) {
         let newUser = new User(userToAdd);
         let jsonValidator = new JsonValidator();
         let emailValidator = new EmailValidator();
@@ -48,20 +48,18 @@ class Database {
             User.findOne({ email: newUser.email }, function(err, result) {
                 // result is true if the email exists.
                 if (result) {
-                        //routerRes.send(`The email ${newUser.email} already exists.`);
-                        console.log(`The email ${newUser.email} already exists.`)
+                        routerRes.status(400).send(`The email ${newUser.email} already exists.`);
                         callback(false);
                 } else {
                     newUser.save(function (err, newUser) {
                         if (err) return console.error(err);
-                        //routerRes.send(`User: ${newUser.name} added!`);
-                        console.log(`User: ${newUser.name} added!`)
+                        routerRes.status(201).send(`User: ${newUser.name} added!`);
                         callback(true);
                     });
                 }
             });
         } else {
-            console.log(`Invalid email ${userToAdd.email}, please verify again.`);
+            routerRes.status(406).send(`Invalid email ${userToAdd.email}, please verify again.`);
             callback(false);
         }
     }
@@ -81,7 +79,7 @@ class Database {
           });
     }
 
-    userLogin(body, callback){
+    userLogin(body, routerRes, callback){
         let query = {email: body.email};
         User.findOne(query, function(err, obj) {
             if (err) throw err;
@@ -89,13 +87,12 @@ class Database {
                 if(obj.pwd == body.pwd) {
                     callback(true);
                 } else {
-                    //routerRes.send("Invalid Password");
-                    console.log("Invalid Password");
+                    routerRes.status(406).send("Invalid Password");
+                    
                     callback(false);
                 }
             } else {
-                //routerRes.send("Invalid Email");
-                console.log("Invalid Email");
+                routerRes.status(406).send("Invalid Email");
                 callback(false);
             }
           });
@@ -117,7 +114,6 @@ class Database {
         
                     newScore.save(function (err, newScore) {
                         if (err) return console.error(err);
-                        //routerRes.send(`Score ${newScore.score} of email ${scoreToAdd.email} added to leaderboard.`);
                         console.log(`Score ${newScore.score} of email ${scoreToAdd.email} added to leaderboard.`);
                         callback(true);
                     });
