@@ -64,10 +64,15 @@ class Database {
         }
     }
 
-    getUsers(routerRes){
+    getUsers(callback){
         User.find(function(err, users){
             if(err) throw err;
-            routerRes.json(users);
+            //routerRes.json(users);
+                let transformedUsers = users.map(function(user) {
+                return user.toJSON();
+            })
+            //console.log(transformedUsers);
+            callback(transformedUsers);
         })
     }
 
