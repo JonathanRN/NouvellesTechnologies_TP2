@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 
 //Users
 router.get('/users', function(req, res, next) {
-    db.getUsers(res);
+    db.getUsers(function(){}, res);
 });
 
 router.post('/users/create', function(req, res, next){
@@ -24,7 +24,7 @@ router.post('/users/delete', function(req, res, next) {
 });
 
 router.post('/users/login', function(req, res, next) {
-    db.userLogin(req.body, res);
+    db.userLogin(req.body, res, function(){});
 });
 ////
 

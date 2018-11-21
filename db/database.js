@@ -64,14 +64,13 @@ class Database {
         }
     }
 
-    getUsers(callback){
+    getUsers(callback, routerRes){
         User.find(function(err, users){
             if(err) throw err;
-            //routerRes.json(users);
+            routerRes.json(users);
                 let transformedUsers = users.map(function(user) {
                 return user.toJSON();
             })
-            //console.log(transformedUsers);
             callback(transformedUsers);
         })
     }
@@ -91,6 +90,7 @@ class Database {
             if(obj) {    
                 if(obj.pwd == body.pwd) {
                     callback(true);
+                    routerRes.status(200).send("Connected");
                 } else {
                     routerRes.status(406).send("Invalid Password");
                     
